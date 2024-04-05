@@ -9,16 +9,10 @@ const functionList = [
     "Add Role",
     "Add Employee",
     "Update Employee Role",
-    "Update Employee Manager",
-    "Update Department for Role",
-    "View Employees by Manager",
-    "View Employees by Department",
-    "View Budget",
-    "Delete Items",
     "Exit"
 ];
 
-const functionObj = {
+const viewFunctions = {
     "View Departments" : "viewDepartments",
     "View Roles" : "viewRoles",
     "View Employees" : "viewEmployees",
@@ -26,12 +20,6 @@ const functionObj = {
     "Add Role" : "addRole",
     "Add Employee" : "addEmployee",
     "Update Employee Role" : "updateRole",
-    "Update Employee Manager" : "updateManager",
-    "Update Department for Role" : "updateDeptRole",
-    "View Employees by Manager" : "viewByManager",
-    "View Employees by Department" : "viewByDept",
-    "View Budget" : "viewBudget",
-    "Delete Item" : "deleteItem",
     "Exit" : "exitApp"
 };
 
@@ -48,12 +36,12 @@ const validateNum = async (input) => {
 };
 
 function newFunction(selectedFunction) {
-    eval(functionObj[selectedFunction] + `();`);
+    eval(viewFunctions[selectedFunction] + `();`);
 };
 
 function initApp() {
     inquirer
-    .prompt({type: "list", name: "function", choices: funcList, pageSize: 14})
+    .prompt({type: "list", name: "function", choices: funcList, pageSize: 8})
     .then((response) => {
         newFunction(response.function);
     });
@@ -104,7 +92,114 @@ async function addRole() {
             },
             {
                 type: "input",
-                
+                name: "newRole",
+                message: "name this role",
+                validate: validateText
+            },
+            {
+                type: "input",
+                name: "roleSalary",
+                validate: validateNum
             }
         ])
-}
+        .then((response) => {
+            const selectedDept = deptId.filter((element) => element.name == response.roleDept);
+              mysqlFunction.addRoleDb(selectedDept[0].id, response.newRole, response.roleSalary)
+              .then(
+                setTimeout(() => {
+                  initApp()
+            }, 50));
+        })
+    }
+};
+
+async function addEmployee() {
+    const roleId = await mysqlFunction.getRoleId();
+    const managerId = await getEmpId();
+    const noMgr = { name: "None" };
+    managerId.push (noMgr);
+    await inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "employeeRole",
+          message: "select a role",
+          choices: roleId,
+        },
+        {
+          type: "input",
+          name: "firstName",
+          message: "What is the employee's first name?",
+          validate: validateText,
+        },
+        {
+          type: "input",
+          name: "lastName",
+          message: "What is the employee's last name?",
+          validate: validateText,
+        },
+        {
+          type: "list",
+          name: "newManager",
+          message: "select a manager",
+          choices: managerId,
+        },
+      ])
+      .then((response) => {
+        const selectedRole = roleId.filter(
+          (element) => element.name == response.employeeRole
+        );
+        const selectedManager = managerId.filter(
+          (element) => element.name == response.newManager
+        );
+        mysqlFunction.addEmployeeDb(
+          selectedRole[0].id,
+          response.firstName,
+          response.lastName,
+          selectedManager[0].id
+        ).then(
+          setTimeout(() => {
+            initApp();
+          }, 50)
+        );
+      });
+};
+
+async function updateRole() {
+    const EmpId = await mysqlFunction.getEmpId();
+    const roleId = await mysqlFunction.getRoleId();
+    await inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "name",
+          message: "select employee to update",
+          choices: EmpId,
+        },
+        {
+          type: "list",
+          name: "newRole",
+          message: "select a new role",
+          choices: roleId,
+        },
+      ])
+      .then((response) => {
+        const pickedRole = roleId.filter(
+          (element) => element.name == response.newRole
+        );
+        const pickedEmp = EmpId.filter(
+          (element) => element.name == response.name
+        );
+        updateEmpRole(pickedRole, pickedEmp).then(
+          setTimeout(() => {
+            initApp();
+          }, 50)
+        );
+      });
+};
+
+function exit() {
+    console.log("Exiting Now")
+};
+
+initApp()
