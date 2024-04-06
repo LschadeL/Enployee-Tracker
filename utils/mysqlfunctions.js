@@ -183,5 +183,5 @@ module.exports = {
   getRoleId,
   addEmployeeDb,
   getEmpId,
-  updateEmpRole,
+  updateEmpRole
 };
