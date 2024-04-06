@@ -5,7 +5,7 @@ async function getDept() {
   const conn = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   const [rows, fields] = await conn.execute(`SELECT * FROM departments`);
@@ -16,7 +16,7 @@ async function getRoles() {
   const conn = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   const [rows, fields] =
@@ -31,7 +31,7 @@ async function getEmployees() {
   const conn = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   const [rows, fields] =
@@ -50,7 +50,7 @@ async function addDept(deptToBeAdded) {
   const conn = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   const [rows, fields] = await conn.execute(
@@ -62,7 +62,7 @@ async function addDept(deptToBeAdded) {
   const connUpdate = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   await connUpdate.execute(`INSERT INTO departments (name) VALUES (?)`, [
@@ -75,7 +75,7 @@ async function getDeptId() {
   const conn = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   const [rows, fields] = await conn.execute(`Select * FROM departments`);
@@ -86,7 +86,7 @@ async function addRoleDb(selectedDept, newRole, roleSalary) {
   const conn = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   const [rows, fields] = await conn.execute(
@@ -98,7 +98,7 @@ async function addRoleDb(selectedDept, newRole, roleSalary) {
   const connUpdate = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   await connUpdate.execute(
@@ -112,7 +112,7 @@ async function getRoleId() {
   const conn = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   const [rows, fields] = await conn.execute(
@@ -125,7 +125,7 @@ async function addEmployeeDb(selectedRole, firstName, lastName, selectedManager)
   const connUpdate = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
 
@@ -148,7 +148,7 @@ async function getEmpId() {
   const conn = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   const [rows, fields] = await conn.execute(
@@ -162,7 +162,7 @@ async function updateEmpRole(selectedRole, selectedEmp) {
   const conn = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "BaceJeleren90!",
+    password: "Password",
     database: "shadygoodsinc",
   });
   await conn.execute(`UPDATE employees SET role_id = ? WHERE id = ?`, [
